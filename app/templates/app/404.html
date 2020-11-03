@@ -1,0 +1,17 @@
+{% extends 'base_404.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <main role="main" class="inner cover">
+        <img class="mb-4" src="{{ url_for('static', filename='img/analytics_machine.svg') }}" alt="Analytics Machine" width="72" height="72">
+        <h1 class="cover-heading">Analytics Machine</h1>
+        <p>Страница не найдена</p>
+        <p>Вернуться на <a href="{{ url_for('index') }}">главную</a></p>
+    </main>
+</div>
+
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base_account.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Settings</h1>
+                </div>
+                <div>
+                    <div class="col-md-12">
+                        <h4 class="mb-3">Add your site:</h4>
+                            <form action="{{ url_for('settings') }}" class="needs-validation"  method="POST">
+
+                                {{ form.hidden_tag() }}
+
+                                {% for field in form if field.name not in ['csrf_token', 'submit'] %}
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        {% if field.errors %}
+                                            {{ field(class="form-control invalid") }}
+                                            <span class="invalid-feedback d-block">
+                                                {% for e in field.errors %}
+                                                {{ e }}
+                                                {% endfor %}
+                                            </span>
+                                        {% else %}
+                                            {{ field(class="form-control") }}
+                                        {% endif %}
+
+                                    </div>
+
+                                </div>
+
+                                {% endfor %}
+
+                                {{ form.submit(class="btn btn-lg btn-primary") }}
+                                <div class="form-label-group">
+                                    {% for cat, msg in get_flashed_messages(True) %}
+                                        <div class="flash {{ cat }}">{{ msg }}</div>
+                                    {% endfor %}
+                                </div>
+                            </form>
+                    </div>
+                </div>
+            </main>
+
+{% endblock %}

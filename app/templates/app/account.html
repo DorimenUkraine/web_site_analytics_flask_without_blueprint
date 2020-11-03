@@ -1,0 +1,104 @@
+{% extends 'base_account.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block body %}
+
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Dashboard</h1>
+                    <div>
+                        {% for cat, msg in get_flashed_messages(True) %}
+                            <div class="flash {{ cat }}">{{ msg }}</div>
+                        {% endfor %}
+                    </div>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <div class="btn-group mr-2">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+                            <span data-feather="calendar"></span>
+                            This week
+                        </button>
+                    </div>
+
+                </div>
+
+                <div id={{ chartID|safe }} class="chart" style="width: 100%"></div>
+
+                <script>
+                    var chart_id = {{ chartID|safe }}
+                    var series = {{ series|safe }}
+                    var xAxis = {{ xAxis|safe }}
+                    var yAxis = {{ yAxis|safe }}
+                    var chart = {{ chart|safe }}
+                </script>
+
+
+                <h2>Sessions table view</h2>
+                <span>Total: {{ total_items }}</span>
+                <nav aria-label="data pagination">
+                    <ul class="pagination">
+                        {% if table_data.has_prev %}<li class="page-item"><a class="page-link" href="{{ url_for('account', page = table_data.prev_num) }}">Previous</a>{% endif %}</li>
+
+                        <!-- all page numbers -->
+                        {% for page_num in table_data.iter_pages() %}
+                            {% if page_num %}
+                                {% if page_num != table_data.page %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="{{ url_for('account', page=page_num) }}">{{ page_num }}</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                        <a class="page-link active" href="#">{{ page_num }}</a>
+                                    </li>
+                                {% endif %}
+                           {% else %}
+
+                           {% endif %}
+                        {% endfor %}
+
+                        {% if table_data.has_next %}<li class="page-item"><a class="page-link" href="{{ url_for('account', page = table_data.next_num) }}">Next</a></li>{% endif %}
+                    </ul>
+                </nav>
+
+
+
+
+                <div class="table-responsive">
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>IP</th>
+                                <th>CID</th>
+                                <th>Session</th>
+                                <th>Date / Time</th>
+                                <th>URI</th>
+                                <th>Platform</th>
+                                <th>Value</th>
+                                <th>Target</th>
+                            </tr>
+                        </thead>
+                       <tbody>
+                            {% for value in table_data.items %}
+                            <tr>
+                                <td>{{ value.id }}</td>
+                                <td>{{ value.ip }}</td>
+                                <td>{{ value.cid }}</td>
+                                <td>{{ value.session }}</td>
+                                <td>{{ value.datetime }}</td>
+                                <td>{{ value.doc_uri }}</td>
+                                <td>{{ value.platform }}</td>
+                                <td>{{ value.value }}</td>
+                                <td>{{ value.target }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                </div>
+            </main>
+{% endblock %}
